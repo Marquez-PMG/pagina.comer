@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moto Repuestos - Tienda</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f9f9fb;
+      color: #222;
+      background-image: url('https://motornewsdotes.wordpress.com/wp-content/uploads/2014/11/marcas_motos.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      /* Para mejorar la legibilidad del texto sobre la imagen */
+      background-attachment: fixed;
+    }
+
+    header {
+      background-color: #0061bdcc; /* Añadí un poco de transparencia para que se vea mejor sobre la imagen */
+      color: white;
+      padding: 30px;
+      text-align: center;
+      backdrop-filter: brightness(0.8);
+      -webkit-backdrop-filter: brightness(0.8);
+    }
+
+    h1 {
+      font-size: 2.5em;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente para contenido */
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .filters {
+      margin-bottom: 20px;
+    }
+
+    .filters select {
+      padding: 10px;
+      font-size: 1em;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background-color: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .product h3 {
+      font-size: 1.2em;
+      margin: 10px 0 5px;
+    }
+    
+    .product p {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #a4a700;
+    }
+
+    .product button {
+      background-color: #c97200;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .product button:hover {
+      background-color: #00fa21;
+    }
+
+    .cart {
+      margin-top: 40px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(106, 27, 154, 0.15);
+    }
+
+    footer {
+      text-align: center;
+      background: #222;
+      color: white;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 8px;
+    }
+
+    #btn-whatsapp {
+      margin-top: 15px;
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+      display: block;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    #btn-whatsapp:hover {
+      background-color: #128c4a;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Moto Repuestos</h1>
+  <p>Repuestos y accesorios para tu moto</p>
+</header>
+
+<div class="container">
+  <div class="filters">
+    <label for="category">Filtrar por categoría:</label>
+    <select id="category" onchange="filterProducts()">
+      <option value="all">Todos</option>
+      <option value="frenos">Frenos</option>
+      <option value="luces">Luces</option>
+      <option value="casco">Cascos</option>
+      <option value="espejos">Espejos</option>
+      <option value="baterias">Baterías</option>
+    </select>
+  </div>
+
+  <div class="products" id="product-list">
+  </div>
+
+  <div class="cart">
+    <h2>🛒 Carrito de compras</h2>
+    <table id="cart-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="cart-body">
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="3">Total</th>
+          <th id="cart-total">0</th>
+        </tr>
+      </tfoot>
+    </table>
+    <button id="btn-whatsapp" onclick="enviarPorWhatsApp()">Enviar pedido por WhatsApp</button>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Moto Repuestos. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  const products = [
+    {
+      nombre: "Pastillas de Freno",
+      categoria: "frenos",
+      precio: 4.99,
+      imagen: "https://dkparts.com.ec/wp-content/uploads/2021/03/PASTILLA-DE-FRENO-L76.96-e7.54-h42.10-SKR200-070550025.jpg"
+    },
+    {
+      nombre: "Luz led Delantera",
+      categoria: "luces",
+      precio: 15.99,
+      imagen: "https://www.quitoled.com/wp-content/uploads/2023/02/faro.webp"
+    },
+    {
+      nombre: "Casco Deportivo",
+      categoria: "casco",
+      precio: 80.99,
+      imagen: "https://m.media-amazon.com/images/I/61ZivG57VEL._AC_UF1000,1000_QL80_.jpg"
+    },
+    {
+      nombre: "Bombillo LED",
+      categoria: "luces",
+      precio: 6.99,
+      imagen: "https://m.media-amazon.com/images/I/61x4EYrKyzS._AC_SL1000_.jpg"
+    },
+    {
+      nombre: "Casco Urban",
+      categoria: "casco",
+      precio: 45.99,
+      imagen: "https://m.media-amazon.com/images/I/61OQHMgHXHL._AC_UF894,1000_QL80_.jpg"
+    },
+    {
+      nombre: "Espejos Modelo 1",
+      categoria: "espejos",
+      precio: 12.97,
+      imagen: "https://i.ebayimg.com/thumbs/images/g/UQEAAOSw1rxmeoGC/s-l1200.jpg"
+    },
+    {
+      nombre: "Luces Modelo 2",
+      categoria: "luces",
+      precio: 18.89,
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9OQrDokr530V4lHROZzZQcnq9k3jXN5FmbDf6gmlP8SwY64DMKl39BLIJQh9KTg6S55g&usqp=CAU"
+    },
+    {
+      nombre: "Casco para pista",
+      categoria: "casco",
+      precio: 149.99,
+      imagen: "https://imagenes.elpais.com/resizer/v2/FSMTDUXSR5K55E5KPIT4JWS3I4.jpg?auth=666f98a56165888f83bdb7ebaa5e5d47e30f2ff44d8803038d1defc9d208fb89&width=1200"
+    },
+    {
+      nombre: "Casco Urban 2",
+      categoria: "casco",
+      precio: 74.99,
+      imagen: "https://clupp.com.mx/wordpress/wp-content/uploads/2023/06/Casco-inteligente-Harley-Davidson.jpg"
+    },
+    {
+      nombre: "Batería Dacar",
+      categoria: "baterias",
+      precio: 70.00,
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAFkkn265-bu4PHq-QIGKS9kWHstJ_O77nHQ&s"
+    }
+  ];
+
+  const carrito = {};
+
+  function mostrarProductos(lista) {
+    const contenedor = document.getElementById("product-list");
+    contenedor.innerHTML = "";
+
+    lista.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "product";
+      div.innerHTML = `
+        <img src="${p.imagen}" alt="${p.nombre}">
+        <h3>${p.nombre}</h3>
+        <p>$${p.precio.toFixed(2)}</p>
+        <button onclick="agregarAlCarrito('${p.nombre}')">Agregar al carrito</button>
+      `;
+      contenedor.appendChild(div);
+    });
+  }
+
+  function agregarAlCarrito(nombre) {
+    carrito[nombre] = (carrito[nombre] || 0) + 1;
+    actualizarCarrito();
+  }
+
+  function actualizarCarrito() {
+    const cuerpo = document.getElementById("cart-body");
+    cuerpo.innerHTML = "";
+    let total = 0;
+
+    Object.keys(carrito).forEach(nombre => {
+      const producto = products.find(p => p.nombre === nombre);
+      const subtotal = producto.precio * carrito[nombre];
+      total += subtotal;
+
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${nombre}</td>
+        <td>${carrito[nombre]}</td>
+        <td>$${producto.precio.toFixed(2)}</td>
+        <td>$${subtotal.toFixed(2)}</td>
+      `;
+      cuerpo.appendChild(fila);
+    });
+
+    document.getElementById("cart-total").textContent = `$${total.toFixed(2)}`;
+  }
+
+  function filterProducts() {
+    const filtro = document.getElementById("category").value;
+    if (filtro === "all") {
+      mostrarProductos(products);
+    } else {
+      const filtrados = products.filter(p => p.categoria === filtro);
+      mostrarProductos(filtrados);
+    }
+  }
+
+  function enviarPorWhatsApp() {
+    if (Object.keys(carrito).length === 0) {
+      alert("El carrito está vacío. Agrega productos antes de enviar el pedido.");
+      return;
+    }
+
+    let mensaje = "🛒 Pedido desde la tienda Moto Repuestos:\n";
+    let total = 0;
+
+    Object.keys(carrito).forEach(nombre => {
+      const producto = products.find(p => p.nombre === nombre);
+      const subtotal = producto.precio * carrito[nombre];
+      total += subtotal;
+      mensaje += `• ${nombre} x${carrito[nombre]} - $${subtotal.toFixed(2)}\n`;
+    });
+
+    mensaje += `Total: $${total.toFixed(2)}`;
+
+    const numero = "593967307296"; // Número con código país y sin cero inicial
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
+  }
+
+  mostrarProductos(products);s
+  
+</script>
+
+</body>
+</html>
