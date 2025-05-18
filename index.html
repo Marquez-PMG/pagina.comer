@@ -19,12 +19,11 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      /* Para mejorar la legibilidad del texto sobre la imagen */
       background-attachment: fixed;
     }
 
     header {
-      background-color: #0061bdcc; /* Añadí un poco de transparencia para que se vea mejor sobre la imagen */
+      background-color: #0061bdcc;
       color: white;
       padding: 30px;
       text-align: center;
@@ -40,7 +39,7 @@
       max-width: 1100px;
       margin: auto;
       padding: 20px;
-      background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente para contenido */
+      background-color: rgba(255, 255, 255, 0.9);
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
@@ -79,7 +78,7 @@
       font-size: 1.2em;
       margin: 10px 0 5px;
     }
-    
+
     .product p {
       font-weight: bold;
       margin-bottom: 10px;
@@ -145,10 +144,15 @@
     #btn-whatsapp:hover {
       background-color: #128c4a;
     }
+
+    .qty-buttons button {
+      padding: 5px 10px;
+      margin: 0 5px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-
 <header>
   <h1>Moto Repuestos</h1>
   <p>Repuestos y accesorios para tu moto</p>
@@ -167,8 +171,7 @@
     </select>
   </div>
 
-  <div class="products" id="product-list">
-  </div>
+  <div class="products" id="product-list"></div>
 
   <div class="cart">
     <h2>🛒 Carrito de compras</h2>
@@ -181,8 +184,7 @@
           <th>Subtotal</th>
         </tr>
       </thead>
-      <tbody id="cart-body">
-      </tbody>
+      <tbody id="cart-body"></tbody>
       <tfoot>
         <tr>
           <th colspan="3">Total</th>
@@ -200,66 +202,16 @@
 
 <script>
   const products = [
-    {
-      nombre: "Pastillas de Freno",
-      categoria: "frenos",
-      precio: 4.99,
-      imagen: "https://dkparts.com.ec/wp-content/uploads/2021/03/PASTILLA-DE-FRENO-L76.96-e7.54-h42.10-SKR200-070550025.jpg"
-    },
-    {
-      nombre: "Luz led Delantera",
-      categoria: "luces",
-      precio: 15.99,
-      imagen: "https://www.quitoled.com/wp-content/uploads/2023/02/faro.webp"
-    },
-    {
-      nombre: "Casco Deportivo",
-      categoria: "casco",
-      precio: 80.99,
-      imagen: "https://m.media-amazon.com/images/I/61ZivG57VEL._AC_UF1000,1000_QL80_.jpg"
-    },
-    {
-      nombre: "Bombillo LED",
-      categoria: "luces",
-      precio: 6.99,
-      imagen: "https://m.media-amazon.com/images/I/61x4EYrKyzS._AC_SL1000_.jpg"
-    },
-    {
-      nombre: "Casco Urban",
-      categoria: "casco",
-      precio: 45.99,
-      imagen: "https://m.media-amazon.com/images/I/61OQHMgHXHL._AC_UF894,1000_QL80_.jpg"
-    },
-    {
-      nombre: "Espejos Modelo 1",
-      categoria: "espejos",
-      precio: 12.97,
-      imagen: "https://i.ebayimg.com/thumbs/images/g/UQEAAOSw1rxmeoGC/s-l1200.jpg"
-    },
-    {
-      nombre: "Luces Modelo 2",
-      categoria: "luces",
-      precio: 18.89,
-      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9OQrDokr530V4lHROZzZQcnq9k3jXN5FmbDf6gmlP8SwY64DMKl39BLIJQh9KTg6S55g&usqp=CAU"
-    },
-    {
-      nombre: "Casco para pista",
-      categoria: "casco",
-      precio: 149.99,
-      imagen: "https://imagenes.elpais.com/resizer/v2/FSMTDUXSR5K55E5KPIT4JWS3I4.jpg?auth=666f98a56165888f83bdb7ebaa5e5d47e30f2ff44d8803038d1defc9d208fb89&width=1200"
-    },
-    {
-      nombre: "Casco Urban 2",
-      categoria: "casco",
-      precio: 74.99,
-      imagen: "https://clupp.com.mx/wordpress/wp-content/uploads/2023/06/Casco-inteligente-Harley-Davidson.jpg"
-    },
-    {
-      nombre: "Batería Dacar",
-      categoria: "baterias",
-      precio: 70.00,
-      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAFkkn265-bu4PHq-QIGKS9kWHstJ_O77nHQ&s"
-    }
+    { nombre: "Pastillas de Freno", categoria: "frenos", precio: 4.99, imagen: "https://dkparts.com.ec/wp-content/uploads/2021/03/PASTILLA-DE-FRENO-L76.96-e7.54-h42.10-SKR200-070550025.jpg" },
+    { nombre: "Luz led Delantera", categoria: "luces", precio: 15.99, imagen: "https://www.quitoled.com/wp-content/uploads/2023/02/faro.webp" },
+    { nombre: "Casco Deportivo", categoria: "casco", precio: 80.99, imagen: "https://m.media-amazon.com/images/I/61ZivG57VEL._AC_UF1000,1000_QL80_.jpg" },
+    { nombre: "Bombillo LED", categoria: "luces", precio: 6.99, imagen: "https://m.media-amazon.com/images/I/61x4EYrKyzS._AC_SL1000_.jpg" },
+    { nombre: "Casco Urban", categoria: "casco", precio: 45.99, imagen: "https://m.media-amazon.com/images/I/61OQHMgHXHL._AC_UF894,1000_QL80_.jpg" },
+    { nombre: "Espejos Modelo 1", categoria: "espejos", precio: 12.97, imagen: "https://i.ebayimg.com/thumbs/images/g/UQEAAOSw1rxmeoGC/s-l1200.jpg" },
+    { nombre: "Luces Modelo 2", categoria: "luces", precio: 18.89, imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9OQrDokr530V4lHROZzZQcnq9k3jXN5FmbDf6gmlP8SwY64DMKl39BLIJQh9KTg6S55g&usqp=CAU" },
+    { nombre: "Casco para pista", categoria: "casco", precio: 149.99, imagen: "https://imagenes.elpais.com/resizer/v2/FSMTDUXSR5K55E5KPIT4JWS3I4.jpg?auth=666f98a56165888f83bdb7ebaa5e5d47e30f2ff44d8803038d1defc9d208fb89&width=1200" },
+    { nombre: "Casco Urban 2", categoria: "casco", precio: 74.99, imagen: "https://clupp.com.mx/wordpress/wp-content/uploads/2023/06/Casco-inteligente-Harley-Davidson.jpg" },
+    { nombre: "Batería Dacar", categoria: "baterias", precio: 70.00, imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAFkkn265-bu4PHq-QIGKS9kWHstJ_O77nHQ&s" }
   ];
 
   const carrito = {};
@@ -286,6 +238,20 @@
     actualizarCarrito();
   }
 
+  function incrementarCantidad(nombre) {
+    carrito[nombre]++;
+    actualizarCarrito();
+  }
+
+  function disminuirCantidad(nombre) {
+    if (carrito[nombre] > 1) {
+      carrito[nombre]--;
+    } else {
+      delete carrito[nombre];
+    }
+    actualizarCarrito();
+  }
+
   function actualizarCarrito() {
     const cuerpo = document.getElementById("cart-body");
     cuerpo.innerHTML = "";
@@ -293,13 +259,20 @@
 
     Object.keys(carrito).forEach(nombre => {
       const producto = products.find(p => p.nombre === nombre);
-      const subtotal = producto.precio * carrito[nombre];
+      const cantidad = carrito[nombre];
+      const subtotal = producto.precio * cantidad;
       total += subtotal;
 
       const fila = document.createElement("tr");
       fila.innerHTML = `
         <td>${nombre}</td>
-        <td>${carrito[nombre]}</td>
+        <td>
+          <div class="qty-buttons">
+            <button onclick="disminuirCantidad('${nombre}')">−</button>
+            ${cantidad}
+            <button onclick="incrementarCantidad('${nombre}')">+</button>
+          </div>
+        </td>
         <td>$${producto.precio.toFixed(2)}</td>
         <td>$${subtotal.toFixed(2)}</td>
       `;
@@ -336,14 +309,12 @@
     });
 
     mensaje += `Total: $${total.toFixed(2)}`;
-
-    const numero = "593967307296"; // Número con código país y sin cero inicial
+    const numero = "593967307296";
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, "_blank");
   }
 
-  mostrarProductos(products);s
-  
+  mostrarProductos(products);
 </script>
 
 </body>
